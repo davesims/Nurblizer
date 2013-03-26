@@ -9,16 +9,13 @@ end
 
 
 def nurble(text)
-    text = text.upcase
-    words = text.downcase().gsub(/[^a-z ]/, '').split
-
-    words.each{|w|
-        if not @@nouns.include? w
-          pattern = Regexp.new('(\b)'+ w + '(\b)', Regexp::IGNORECASE)
-          replacement = "\1<span class=\"nurble\">nurble</span>\2"
-          text.gsub! pattern, replacement
-        end
-    }
+    words = text.scan(/[A-Za-z]\w+/)
+    text = text.upcase 
+    
+    (words - @@nouns).each do |w|
+      text.gsub!(/(\b)#{w}(\b)/i, '\1<span class="nurble">nurble</span>\2')
+    end
+    
     text.gsub(/\n/, '<br>')
 end
 
